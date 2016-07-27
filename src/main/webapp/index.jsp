@@ -5,9 +5,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Heroku Hello</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hi and welcome to heroku!</h1>
     </body>
 </html>
