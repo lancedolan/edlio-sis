@@ -5,9 +5,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Heroku Hello</title>
+        <title>Edlio SIS Hello</title>
     </head>
     <body>
-        <h1>Hi and welcome to heroku!</h1>
+        <h1>Hi and welcome to SIS! This is a landing page, where currently you can
+        accomplish nothing :)</h1>
     </body>
 </html>
