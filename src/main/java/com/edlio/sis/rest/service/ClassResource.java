@@ -24,7 +24,7 @@ public class ClassResource {
     @Path("{id}")
     public String getClass( @PathParam("id") final Long id) {
         LOG.info("Getting class with id " + id);
-        return "{ 'id' : " + id + "}" ;
+        return "{ 'id' : " + id + " , 'mongo' : '"+System.getenv("MONGODB_URI")+"'}" ;
     }
     
 }
