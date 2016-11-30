@@ -8,7 +8,8 @@
         <title>Edlio SIS Hello</title>
     </head>
     <body>
-        <h1>Hi and welcome to SIS! This is a landing page, where currently you can
-        accomplish nothing :)</h1>
+        <h1>Hi and welcome to SIS!</h1> 
+        This is a landing page, where currently you can
+        accomplish nothing :)
     </body>
 </html>
