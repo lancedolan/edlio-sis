@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.freelance_webs</groupId>
-    <artifactId>hellojava</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.edlio</groupId>
+    <artifactId>sis</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>hellojava</name>
+    <name>sis</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
