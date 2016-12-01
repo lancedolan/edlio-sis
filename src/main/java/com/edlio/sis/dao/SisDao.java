@@ -11,7 +11,7 @@ import com.edlio.sis.dao.impl.mongo.model.MongoPersistenceObject;
  */
 public interface SisDao {
     
-    public void insert(MongoPersistenceObject object);
+    public String insert(MongoPersistenceObject object);
     
     public void update(MongoPersistenceObject object);
     

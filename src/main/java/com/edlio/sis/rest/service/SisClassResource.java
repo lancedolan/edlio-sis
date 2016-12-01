@@ -59,7 +59,7 @@ public class SisClassResource {
         SisJsonObject jsonRoot = new SisJsonObject(json);
         SisClass sisClass = RestModelBuilder.buildSisClass(jsonRoot);
         dao.insert(sisClass);
-        return json;
+        return JSONMapper.getJson(sisClass);
     }
     
     /**

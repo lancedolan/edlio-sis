@@ -57,9 +57,9 @@ public class StudentResource {
         RestServiceValidator.checkString(json);
         
         SisJsonObject jsonRoot = new SisJsonObject(json);
-        Student sisClass = RestModelBuilder.buildStudent(jsonRoot);
-        dao.insert(sisClass);
-        return json;
+        Student student = RestModelBuilder.buildStudent(jsonRoot);
+        dao.insert(student);
+        return JSONMapper.getJson(student);
     }
     
     /**

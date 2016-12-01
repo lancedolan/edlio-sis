@@ -46,13 +46,20 @@ final public class SisDaoMongoImpl implements SisDao {
         return db.getCollection(collectionName);
     }
     
+    /**
+     * Will set the id on object.
+     * @param object
+     * @return 
+     */
     @Override
-    public void insert(final MongoPersistenceObject object) {
+    public String insert(final MongoPersistenceObject object) {
         MongoCollection collection = getCollection(object);
         
         //Check if it's missing an ID
         if (object.get_id() == null ) {
             object.set_id(String.valueOf(new ObjectId()));
+        } else {
+            throw new IllegalStateException("Cannot insert an object that already has an ID.");
         }
         
         //parsing to get implicit mapping...
@@ -60,7 +67,9 @@ final public class SisDaoMongoImpl implements SisDao {
         final String objectJson = JSONMapper.getJson(object);
         LOG.warning("Created JSON for Mongo from Object...");
         LOG.warning(objectJson);
-        collection.insertOne( Document.parse(objectJson) );
+        collection.insertOne( Document.parse(objectJson));
+        
+        return object.get_id();
     }
     
     @Override

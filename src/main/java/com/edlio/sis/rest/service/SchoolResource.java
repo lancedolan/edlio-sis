@@ -57,9 +57,9 @@ public class SchoolResource {
         RestServiceValidator.checkString(json);
         
         SisJsonObject jsonRoot = new SisJsonObject(json);
-        School sisClass = RestModelBuilder.buildSchool(jsonRoot);
-        dao.insert(sisClass);
-        return json;
+        School school = RestModelBuilder.buildSchool(jsonRoot);
+        dao.insert(school);
+        return JSONMapper.getJson(school);
     }
     
     /**

@@ -57,9 +57,9 @@ public class UserResource {
         RestServiceValidator.checkString(json);
         
         SisJsonObject jsonRoot = new SisJsonObject(json);
-        User sisClass = RestModelBuilder.buildUser(jsonRoot);
-        dao.insert(sisClass);
-        return json;
+        User user = RestModelBuilder.buildUser(jsonRoot);
+        dao.insert(user);
+        return JSONMapper.getJson(user);
     }
     
     /**
