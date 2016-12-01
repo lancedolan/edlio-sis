@@ -3,6 +3,8 @@
  */
 package com.edlio.sis.model;
 
+import com.edlio.sis.dao.impl.mongo.model.MongoPersistenceObject;
+import com.edlio.sis.rest.SisJsonObject;
 import org.json.JSONObject;
 
 /**
@@ -11,26 +13,42 @@ import org.json.JSONObject;
  * Named SisClass to avoid collision with java.lang.Class.
  * 
  */
-public class SisClass {
+public class SisClass implements MongoPersistenceObject {
     
-    private int id;
+    private String _id;
     private String title;
     private int period;
 
     /**
-     * JSON containing attributes necessary to construct Class
+     * Construct totally transient instance.
+     */
+    public SisClass() {}
+    
+    /**
+     * Construct Transient with all data in json.
+     * @param json JSON containing attributes necessary to construct Class
+     */
+    public SisClass(final SisJsonObject json) {
+        this._id = json.getStringOrNull("_id");
+        this.title = json.getStringOrNull("title");
+        this.period = json.getInt("period");
+    }
+    
+    /**
+     * Construct transient with id
      * @param jsonRoot 
      */
-    public SisClass(final JSONObject jsonRoot) {
+    public SisClass(final String id) {
+        this._id = id;
         
     }
     
-    public int getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(String id) {
+        this._id = id;
     }
 
     public String getTitle() {

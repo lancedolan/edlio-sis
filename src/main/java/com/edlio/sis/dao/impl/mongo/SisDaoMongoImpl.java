@@ -4,11 +4,19 @@
 package com.edlio.sis.dao.impl.mongo;
 
 import com.edlio.sis.dao.SisDao;
+import com.edlio.sis.dao.impl.mongo.model.MongoPersistenceObject;
+import com.edlio.sis.model.SisClass;
 import com.edlio.sis.rest.JSONMapper;
+import com.edlio.sis.rest.service.SisClassResource;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
+import java.util.logging.Logger;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+import static com.mongodb.client.model.Filters.*;
+
 
 /**
  *
@@ -16,26 +24,66 @@ import com.mongodb.util.JSON;
  */
 final public class SisDaoMongoImpl implements SisDao {
     
+    private static final Logger LOG = Logger.getLogger(SisClassResource.class.getName());
+    
     //anti-pattern, preferabbly in a config file or something
     private static final String DATABASE_NAME = "sis";
     
     //As noted in readme, I'm not solving the dependency injection
     //concern in this POC. Gladly coupling here.
     final private ClassToCollectionMapper collectionMapper = new ClassToCollectionMapper();
+    final private MongoDocumentMapper documentMapper = new MongoDocumentMapper();
             
-    @Override
-    public void save(final Object object) {
+    private MongoCollection getCollection(final MongoPersistenceObject object) {
         MongoClient client = MongoConnectionManager.getInstance().getConnection();
         MongoDatabase db = client.getDatabase("sis");
         final String collectionName = 
                 collectionMapper.getMongoCollectionName(object);
-        MongoCollection collection = db.getCollection(collectionName);
-        //serializing and then parsing to get implicit mapping...
-        //Convenient but perfomance-costly
-        final String objectJson = JSONMapper.getJson(object);
-        collection.insertOne( JSON.parse(objectJson) );
-        
+        return db.getCollection(collectionName);
     }
+    
+    @Override
+    public void insert(final MongoPersistenceObject object) {
+        MongoCollection collection = getCollection(object);
+        
+        //Check if it's missing an ID
+        if (object.get_id() == null ) {
+            object.set_id(String.valueOf(new ObjectId()));
+        }
+        
+        //parsing to get implicit mapping...
+        //Convenient but perhaps perfomance-costly
+        final String objectJson = JSONMapper.getJson(object);
+        LOG.warning("Created JSON for Mongo from Object...");
+        LOG.warning(objectJson);
+        collection.insertOne( Document.parse(objectJson) );
+    }
+    
+    @Override
+    public void update(final MongoPersistenceObject object) {
+        MongoCollection collection = getCollection(object);
+        
+        //Check if it's missing an ID
+        if (object.get_id() == null ) {
+            throw new IllegalArgumentException();
+        }
+        
+        //parsing to get implicit mapping...
+        //Convenient but perhaps perfomance-costly
+        final String objectJson = JSONMapper.getJson(object);
+        LOG.warning("Created JSON for Mongo from Object...");
+        LOG.warning(objectJson);
+        collection.replaceOne( eq("_id" , object.get_id()) , Document.parse(objectJson) );
+    }
+    
+    @Override
+    public Object get(MongoPersistenceObject object) {
+        MongoCollection collection = getCollection(object);
+        Document doc = (Document) collection.find(eq("_id", object.get_id())).first();
+        return (MongoPersistenceObject) JSONMapper.fromJson(doc.toJson(), object.getClass());//TODO: The class of object variable..
+    } 
+    
+    //TODO: Delete
     
     
 }

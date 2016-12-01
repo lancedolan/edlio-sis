@@ -13,7 +13,10 @@ import java.util.Map;
  */
 final class ClassToCollectionMapper {
      
-    
+    /**
+     * Map Key: canonical name of any known class in business model
+     * Map Entry: the mongoDB collection that should be used for that class
+     */
     final private Map<String , String> collectionMapping = 
             ImmutableMap.of(SisClass.class.getCanonicalName() ,  "class");
      
