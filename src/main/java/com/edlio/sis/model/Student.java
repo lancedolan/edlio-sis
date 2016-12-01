@@ -7,26 +7,25 @@ import com.edlio.sis.dao.impl.mongo.model.MongoPersistenceObject;
 
 /**
  * @author lance
- * Domain model for class, as in "school class."
- * Named SisClass to avoid collision with java.lang.Class.
+ * Domain model for Student.
  * 
  */
-public class SisClass implements MongoPersistenceObject {
+public class Student implements MongoPersistenceObject {
     
     private String _id;
-    private String title;
-    private int period;
-
+    private String grade;
+    private float gpa;
+    
     /**
      * Construct totally transient instance.
      */
-    public SisClass() {}
+    public Student() {}
     
     /**
      * Construct transient with id
      * @param id 
      */
-    public SisClass(final String id) {
+    public Student(final String id) {
         this._id = id;
         
     }
@@ -39,22 +38,22 @@ public class SisClass implements MongoPersistenceObject {
         this._id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getGrade() {
+        return grade;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
-    public int getPeriod() {
-        return period;
+    public float getGpa() {
+        return gpa;
     }
 
-    public void setPeriod(int period) {
-        this.period = period;
+    public void setGpa(float gpa) {
+        this.gpa = gpa;
     }
-    
+
     
     
 }

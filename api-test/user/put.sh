@@ -1,0 +1,1 @@
+ curl -H "Content-Type: application/json" -X PUT -d '{"first_name":"Lance","last_name":"DolanChange" , "birth_date" : "501889891" , "gender" : "female"}' http://localhost:8080/api/user/58408090c3d3a03883e527b3

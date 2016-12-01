@@ -1,14 +1,7 @@
-/*
- * Property of Epic Gamer LLC. If you reuse so much as a statement 
- * from this source, I'll sue your ass to the fullest extent of the law.
- */
 package com.edlio.sis.rest.service;
 
 import com.google.common.base.Strings;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -16,9 +9,9 @@ import javax.ws.rs.core.Response;
  *
  * @author lance
  */
-class RestServiceHelper {
+class RestServiceValidator {
     
-    private static final Logger LOG = Logger.getLogger(RestServiceHelper.class.getName());
+    private static final Logger LOG = Logger.getLogger(RestServiceValidator.class.getName());
     
     /**
      * Check if the Long is not null. If it is, throw BAD_REQUEST to client.

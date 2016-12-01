@@ -5,7 +5,7 @@ package com.edlio.sis.rest.service;
 
 import com.edlio.sis.dao.impl.mongo.SisDaoMongoImpl;
 import com.edlio.sis.dao.SisDao;
-import com.edlio.sis.model.SisClass;
+import com.edlio.sis.model.School;
 import com.edlio.sis.rest.JSONMapper;
 import com.edlio.sis.rest.SisJsonObject;
 import java.util.logging.Logger;
@@ -24,10 +24,10 @@ import javax.ws.rs.core.Response;
  *
  * @author lance
  */
-@Path("/class")
-public class SisClassResource {
+@Path("/school")
+public class SchoolResource {
     
-    private static final Logger LOG = Logger.getLogger(SisClassResource.class.getName());
+    private static final Logger LOG = Logger.getLogger(SchoolResource.class.getName());
     
     //Coupling. Not doing dependency injection in this POC.
     private SisDao dao = new SisDaoMongoImpl();
@@ -35,9 +35,9 @@ public class SisClassResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public String getClass( @PathParam("id") final String id) {
-        SisClass sisClassnew = new SisClass(id);
-        Object returnObj = dao.get(sisClassnew);
+    public String getSchool( @PathParam("id") final String id) {
+        School school = new School(id);
+        School returnObj = (School) dao.get(school);
         if (returnObj == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -45,27 +45,27 @@ public class SisClassResource {
     }
     
     /**
-     * Creates new class object. Not idempotent - new class is generated
+     * Creates new school object. Not idempotent - new school is generated
      * each time, and new id assigned.
-     * @param json JSON representation of the class to create
-     * @return JSON representation of the created class
+     * @param json JSON representation of the school to create
+     * @return JSON representation of the created school
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String postClass( final String json ) {
+    public String postSchool( final String json ) {
         //validate inputs
         RestServiceValidator.checkString(json);
         
         SisJsonObject jsonRoot = new SisJsonObject(json);
-        SisClass sisClass = RestModelBuilder.buildSisClass(jsonRoot);
+        School sisClass = RestModelBuilder.buildSchool(jsonRoot);
         dao.insert(sisClass);
         return json;
     }
     
     /**
-     * updates class object. Idempotent.
-     * @param json JSON representation of the class to create
-     * @return JSON representation of the updated class
+     * updates School object. Idempotent.
+     * @param json JSON representation of the school to create
+     * @return JSON representation of the updated school
      */
     @PUT
     @Path("{id}")
@@ -77,9 +77,9 @@ public class SisClassResource {
         RestServiceValidator.checkString(json);
         
         SisJsonObject jsonRoot = new SisJsonObject(json);
-        SisClass sisClass = RestModelBuilder.buildSisClass(jsonRoot);
-        sisClass.set_id(id);
-        dao.update(sisClass);
+        School school = RestModelBuilder.buildSchool(jsonRoot);
+        school.set_id(id);
+        dao.update(school);
         
         return json;
     }
@@ -87,7 +87,7 @@ public class SisClassResource {
     @DELETE
     @Path("{id}")
     public void deleteClass( @PathParam("id") final String id) {
-        SisClass sisClassnew = new SisClass(id);
-        dao.delete(sisClassnew);
+        School school = new School(id);
+        dao.delete(school);
     }
 }

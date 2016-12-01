@@ -5,17 +5,16 @@ package com.edlio.sis.dao.impl.mongo;
 
 import com.edlio.sis.dao.SisDao;
 import com.edlio.sis.dao.impl.mongo.model.MongoPersistenceObject;
-import com.edlio.sis.model.SisClass;
 import com.edlio.sis.rest.JSONMapper;
 import com.edlio.sis.rest.service.SisClassResource;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
 import java.util.logging.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
+import com.mongodb.client.result.UpdateResult;
 
 
 /**
@@ -33,10 +32,15 @@ final public class SisDaoMongoImpl implements SisDao {
     //concern in this POC. Gladly coupling here.
     final private ClassToCollectionMapper collectionMapper = new ClassToCollectionMapper();
     final private MongoDocumentMapper documentMapper = new MongoDocumentMapper();
-            
+    
+    /**
+     * 
+     * @param object
+     * @return the correct mongo collection based on Object type
+     */
     private MongoCollection getCollection(final MongoPersistenceObject object) {
         MongoClient client = MongoConnectionManager.getInstance().getConnection();
-        MongoDatabase db = client.getDatabase("sis");
+        MongoDatabase db = client.getDatabase(DATABASE_NAME);
         final String collectionName = 
                 collectionMapper.getMongoCollectionName(object);
         return db.getCollection(collectionName);
@@ -73,17 +77,24 @@ final public class SisDaoMongoImpl implements SisDao {
         final String objectJson = JSONMapper.getJson(object);
         LOG.warning("Created JSON for Mongo from Object...");
         LOG.warning(objectJson);
-        collection.replaceOne( eq("_id" , object.get_id()) , Document.parse(objectJson) );
+        UpdateResult result = collection.replaceOne( eq("_id" , object.get_id()) , Document.parse(objectJson) );
     }
     
     @Override
     public Object get(MongoPersistenceObject object) {
         MongoCollection collection = getCollection(object);
         Document doc = (Document) collection.find(eq("_id", object.get_id())).first();
-        return (MongoPersistenceObject) JSONMapper.fromJson(doc.toJson(), object.getClass());//TODO: The class of object variable..
+        if (doc == null) {
+            return null;
+        }
+        return (MongoPersistenceObject) JSONMapper.fromJson(doc.toJson(), object.getClass());
     } 
-    
-    //TODO: Delete
+
+    @Override
+    public void delete(MongoPersistenceObject object) {
+        MongoCollection collection = getCollection(object);
+        collection.deleteOne(eq("_id", object.get_id()));
+    }
     
     
 }

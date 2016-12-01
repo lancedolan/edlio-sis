@@ -1,0 +1,1 @@
+ curl -H "Content-Type: application/json" -X PUT -d '{ "name":"Harding","street_address":"123 LearnDifferent St", "zip": "90045" , "state" : "CA" , "school_type" : "elementary" }' http://localhost:8080/api/school/58407339c3d3a036c9777dcb
