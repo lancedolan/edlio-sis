@@ -11,12 +11,13 @@ objects to their exact URI, such as /api/class/123123, however I've decided to a
 
 Time-saving compromises I wouldn't normally make in a production quality solution:
 - Missing javadoc on classes/methods
-- Not implementing partial-update in api, which would optimize bandwidth
-- Not worring about dependency injection.. Guice/Spring seems overkill for this, and writing this bullet takes a lot less time than some elementary factory.
-- model package has a dependency on dao MONGO impl... thats a no-no.
+- Not implementing partial-update in api (PATCH), which would optimize bandwidth and simplify client code.
+- Not worring about dependency injection.. Guice/Spring seems overkill for this, and writing this bullet takes a lot less time than some elementary factory. Prepare to see the 'new' keyword.
+- model package has a loose dependency on dao impl in that it implements an interface given by the dao impl... thats a no-no. Saved me substantial time in developing the dao impl.
 - would like to refactor DAO methods to take a class and id rather than object partially populated with id.
-- Not using jackson to deserialize and map REST JSON in to Jave POJOs
-- String literals all over the place
-- By definition the PUT should create if the thing doesn't exist. It currently does not.
-- Api is missing response information on PUT to notify whether anything was successfully changed- not fully validating all attributes of JSON 
+- Not using jackson to deserialize and map the JSON from REST client in to Jave POJOs. RestModelBuilder is a static method library that provides a rudimentary solution.
+- String literals all over the place. I never do that in production code.
+- By definition, PUT should create if the thing doesn't exist. It currently only updates if the thing exists.
+- Api is missing response information on PUT to notify whether anything was successfully changed. Client code just relies on the 200 status code.
+- not fully validating all attributes of JSON 
 - No authentication, wide open endpoints
