@@ -26,7 +26,7 @@ final public class SisDaoMongoImpl implements SisDao {
     private static final Logger LOG = Logger.getLogger(SisClassResource.class.getName());
     
     //anti-pattern, preferabbly in a config file or something
-    private static final String DATABASE_NAME = "sis";
+    private static final String DATABASE_NAME = "heroku_nkfdk7fm";
     
     //As noted in readme, I'm not solving the dependency injection
     //concern in this POC. Gladly coupling here.
